@@ -2,7 +2,7 @@ from qiskit import QuantumCircuit, Aer
 import numpy as np
 import Crypto.Random.random
 
-# Encode each bit according to the choosen base
+# Encode each bit according to the chosen base
 def encode(qc, bit, base):
 
     if base == 'H':
