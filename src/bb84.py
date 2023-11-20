@@ -2,6 +2,7 @@ from qiskit import QuantumCircuit, Aer, execute
 import numpy as np
 import Crypto.Random.random
 from qiskit.providers.aer import QasmSimulator
+import random
 
 SIZE = 1024
 
@@ -64,4 +65,52 @@ if __name__ == '__main__':
     # Bob measures all the bits
     measured_bits = measure_bits(qc_list, Bob_bases)
 
-    print(measured_bits)
+    # Bob communicates his bases
+    print("Bob bases:", Bob_bases)
+
+    # Alice checks which bases are the same as bob's bases
+    common_bases=[]
+    for i in range(len(Bob_bases)):
+        if Bob_bases[i] == Alice_bases[i]:
+            common_bases.append(i)
+
+    # Alice communicates right bases
+    print("Common bases (indexes)",common_bases)
+
+    # Alice updates her key
+    Alice_temp_key = []
+    for i in common_bases:
+        Alice_temp_key.append(Alice_bits[i])
+
+    # Bob updates his key
+    Bob_temp_key = []
+    for i in common_bases:
+        Bob_temp_key.append(measured_bits[i])
+    
+
+    check_size = len(common_bases) * 0.1
+
+    # Alice and Bob choose the bits to use to verify the correctness of the algorithm
+    security_bits = random.sample(range(0, len(common_bases)), int(check_size))
+    print(security_bits)   
+    #security_bits = Crypto.Random.random.sample(common_bases, int(check_size))
+
+    print("Security bits: ")
+    for i in security_bits:
+        if Bob_temp_key[i] != Alice_temp_key[i]:
+            print("\nSomeone manipulated the key exchange")
+            exit()
+        print(Alice_temp_key[i], end = "")
+
+    # Alice discards the bits used for the correctness check
+    Alice_key = []
+    for i in range(len(Alice_temp_key)):
+        if i not in security_bits:
+            Alice_key.append(Alice_temp_key[i])
+
+    # Bob discards the bits used for the correctness check
+    Bob_key = []
+    for i in range(len(Bob_temp_key)):
+        if i not in security_bits:
+            Bob_key.append(Bob_temp_key[i])
+
