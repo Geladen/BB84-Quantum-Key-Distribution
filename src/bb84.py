@@ -25,6 +25,7 @@ def encode(bits, bases):
                 qc.x(0)
                 qc.h(0)
 
+        qc.barrier()
         encoded_bits.append(qc)
 
     return encoded_bits
@@ -90,10 +91,13 @@ if __name__ == '__main__':
 
     check_size = len(common_bases) * 0.1
 
+
     # Alice and Bob choose the bits to use to verify the correctness of the algorithm
-    security_bits = random.sample(range(0, len(common_bases)), int(check_size))
-    print(security_bits)   
-    #security_bits = Crypto.Random.random.sample(common_bases, int(check_size))
+    #security_bits = random.sample(range(0, len(common_bases)), int(check_size))
+    #print(security_bits)   
+    security_bits = Crypto.Random.random.sample(range(0, len(common_bases)), int(check_size))
+    #print(security_bits)   
+
 
     print("Security bits: ")
     for i in security_bits:
@@ -114,3 +118,5 @@ if __name__ == '__main__':
         if i not in security_bits:
             Bob_key.append(Bob_temp_key[i])
 
+    print("\nFinal key: ", Bob_key)
+    print("Key lenght: ", len(Bob_key))
