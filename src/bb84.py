@@ -1,7 +1,6 @@
 from qiskit import QuantumCircuit, Aer, execute
 import numpy as np
 import Crypto.Random.random
-from qiskit.providers.aer import QasmSimulator
 import random
 
 SIZE = 1024
@@ -30,7 +29,7 @@ def encode(bits, bases):
 
     return encoded_bits
 
-# Measure al qubits with the beses given by Bob
+# Measure al qubits with the bases given by Bob
 def measure_bits(bits, bases):
     measured_bits = []
     backend = Aer.get_backend('aer_simulator')
