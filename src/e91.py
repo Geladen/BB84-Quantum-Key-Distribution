@@ -21,17 +21,16 @@ def measure_in_random_bases(circuit):
         circuit.h(0)
         circuit.measure(0, 0)
     
-    '''
     if basis2 == 'Z':
         circuit.measure(1, 1)
     elif basis2 == 'X':
         circuit.h(1)
         circuit.measure(1, 1)
-    '''
+
     backend = Aer.get_backend('aer_simulator')
     compiled_circuit = transpile(circuit, backend)
-    result = backend.run(compiled_circuit, shots=1, memory=True).result()
-    print(result.get_memory())
+    result = backend.run(compiled_circuit, shots=1).result()
+
     counts = result.get_counts()
 
     return counts, basis1==basis2
@@ -49,10 +48,10 @@ def main(num_pairs):
     return key_bits
 
 if __name__ == "__main__":
-    num_pairs =15  # Puoi scegliere quante coppie di particelle entangled verificare.
+    num_pairs =1024  # Puoi scegliere quante coppie di particelle entangled verificare.
     key_bits = main(num_pairs)
     
     print("Chiave quantistica generata:")
-    #print(key_bits)
-    #print(len(key_bits))
+    print(key_bits)
+    print(len(key_bits))
 
