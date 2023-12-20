@@ -29,7 +29,7 @@ def encode(bits, bases):
 
     return encoded_bits
 
-# Measure al qubits with the beses given by Bob
+# Measure all qubits with the bases given by Bob
 def measure_bits(bits, bases):
     measured_bits = []
     backend = Aer.get_backend('aer_simulator')
@@ -86,17 +86,11 @@ if __name__ == '__main__':
     Bob_temp_key = []
     for i in common_bases:
         Bob_temp_key.append(measured_bits[i])
-    
 
     check_size = len(common_bases) * 0.1
 
-
-    # Alice and Bob choose the bits to use to verify the correctness of the algorithm
-    #security_bits = random.sample(range(0, len(common_bases)), int(check_size))
-    #print(security_bits)   
-    security_bits = Crypto.Random.random.sample(range(0, len(common_bases)), int(check_size))
-    #print(security_bits)   
-
+    # Alice and Bob choose the bits to use to verify the correctness of the algorithm 
+    security_bits = Crypto.Random.random.sample(range(0, len(common_bases)), int(check_size))   
 
     print("Security bits: ")
     for i in security_bits:
