@@ -1,6 +1,4 @@
 from qiskit import QuantumCircuit, Aer, execute
-import numpy as np
-import Crypto.Random.random
 import random
 
 SIZE = 1024
@@ -51,16 +49,17 @@ def measure_bits(bits, bases):
 if __name__ == '__main__':
 
     # Alice generates random bits
-    Alice_bits = [int(d) for d in bin(Crypto.Random.random.getrandbits(SIZE))[2:].rjust(SIZE, '0')] 
+    #Alice_bits = [int(d) for d in bin(Crypto.Random.random.getrandbits(100))[2:].rjust(SIZE, '0')] 
+    Alice_bits = [int(d) for d in bin(random.getrandbits(SIZE))[2:].rjust(SIZE, '0')]
 
     # Alice generates random bits in order to choose bases
-    Alice_bases = [int(d) for d in bin(Crypto.Random.random.getrandbits(SIZE))[2:].rjust(SIZE, '0')] 
+    Alice_bases = [int(d) for d in bin(random.getrandbits(SIZE))[2:].rjust(SIZE, '0')] 
 
     # Alice applies her bases
     qc_list = encode(Alice_bits, Alice_bases)
 
     # Bob generates random bits in order to choose bases
-    Bob_bases = [int(d) for d in bin(Crypto.Random.random.getrandbits(SIZE))[2:].rjust(SIZE, '0')] 
+    Bob_bases = [int(d) for d in bin(random.getrandbits(SIZE))[2:].rjust(SIZE, '0')] 
 
     # Bob measures all the bits
     measured_bits = measure_bits(qc_list, Bob_bases)
@@ -90,7 +89,7 @@ if __name__ == '__main__':
     check_size = len(common_bases) * 0.1
 
     # Alice and Bob choose the bits to use to verify the correctness of the algorithm 
-    security_bits = Crypto.Random.random.sample(range(0, len(common_bases)), int(check_size))   
+    security_bits = security_bits = random.sample(range(0, len(common_bases)), int(check_size))  
 
     print("Security bits: ")
     for i in security_bits:
